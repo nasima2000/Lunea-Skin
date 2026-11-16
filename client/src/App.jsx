@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar";
 import SliderNavbar  from "./components/SliderNavbar";
 import SectionHome from "./components/sections/SectionHome";
 import SectionInformation from "./components/sections/SectionInformation";
+import Footer from "./components/Footer";
+import SectionAccount from "./components/sections/SectionAccount";
 function App() {
   return (
     <>
@@ -13,7 +15,8 @@ function App() {
          <SliderNavbar />
          <SectionHome />
          <SectionInformation />
-
+         <SectionAccount />
+         <Footer />
     </>
      
   )
