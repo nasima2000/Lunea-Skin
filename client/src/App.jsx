@@ -8,6 +8,7 @@ import SectionInformation from "./components/sections/SectionInformation";
 import Footer from "./components/Footer";
 import SectionAccount from "./components/sections/SectionAccount";
 import About from "./components/about";
+import Contact from "./components/Contact";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -40,7 +41,16 @@ function App() {
     }
    />
 
-   
+     <Route
+      path="/contact"
+       element={
+      <>
+      <Navbar />
+      <Contact />
+      <Footer />
+      </>
+    }
+   />
       
    </Routes>
     
