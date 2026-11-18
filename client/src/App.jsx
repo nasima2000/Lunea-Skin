@@ -10,6 +10,8 @@ import SectionAccount from "./components/sections/SectionAccount";
 import About from "./components/about";
 import Contact from "./components/Contact";
 import Shop from "./components/Shop";
+import Cart from "./components/Cart";
+
 
 import { Routes, Route } from "react-router-dom";
 
@@ -63,6 +65,19 @@ function App() {
       </>
        }
    />
+
+   
+   
+    <Route
+  path="/cart"
+  element={
+    <>
+      <Navbar />
+      <Cart />
+      <Footer />
+    </>
+   }
+     />
       
    </Routes>
     
