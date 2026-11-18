@@ -9,6 +9,8 @@ import Footer from "./components/Footer";
 import SectionAccount from "./components/sections/SectionAccount";
 import About from "./components/about";
 import Contact from "./components/Contact";
+import Shop from "./components/Shop";
+
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -50,6 +52,16 @@ function App() {
       <Footer />
       </>
     }
+   />
+    <Route
+      path="/shop"
+       element={
+      <>
+      <Navbar />
+      <Shop />
+      <Footer />
+      </>
+       }
    />
       
    </Routes>
