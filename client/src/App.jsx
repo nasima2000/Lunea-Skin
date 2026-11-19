@@ -12,7 +12,7 @@ import Contact from "./components/Contact";
 import Shop from "./components/Shop";
 import Cart from "./components/Cart";
 import LoginPage from "./components/LoginPage";
-import SignUp  from "./components/SignUp ";
+import SignUp  from "./components/SignUp";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -80,6 +80,10 @@ function App() {
    }
      />
 
+
+
+
+        {/*  Button */}
 
      <Route
       path="/loginPage"
