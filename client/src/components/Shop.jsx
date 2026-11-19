@@ -2,15 +2,17 @@ import ShopHeader from "./ShopHeader";
 import ShopProducts from "./ShopProducts";
 import ShopBanner from "./ShopBanner";
 
-
-function Shop() {
+function Shop({ cartItems, setCartItems }) {
   return (
     <div>
       <ShopHeader />
-      <ShopProducts />
+      <ShopProducts
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+      />
       <ShopBanner />
     </div>
-  )
+  );
 }
 
-export default Shop
+export default Shop;

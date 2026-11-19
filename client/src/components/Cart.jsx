@@ -1,144 +1,185 @@
 
 import { Link } from "react-router-dom";
 
-const Cart = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Hydrating Face Toner",
-      size: "250ml",
-      price: 24,
-      image: "/Images/product-1.png",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Vitamin C Serum",
-      size: "30ml",
-      price: 32,
-      image: "/Images/product-2.png",
-      quantity: 1,
-    },
-  ];
+const Cart = ({ cartItems, setCartItems }) => {
 
-  const subtotal = products.reduce(
-    (total, product) => total + product.price * product.quantity,
+  // Calculate Subtotal
+  const subtotal = cartItems.reduce(
+    (total, product) => total + product.price * (product.quantity || 1),
     0
   );
 
+  // Remove Product
+  const removeProduct = (id) => {
+    setCartItems(cartItems.filter((product) => product.id !== id));
+  };
+
+  // Increase Quantity
+  const increaseQuantity = (id) => {
+    setCartItems(
+      cartItems.map((product) =>
+        product.id === id
+          ? { ...product, quantity: (product.quantity || 1) + 1 }
+          : product
+      )
+    );
+  };
+
+  // Decrease Quantity
+  const decreaseQuantity = (id) => {
+    setCartItems(
+      cartItems.map((product) =>
+        product.id === id
+          ? { ...product, quantity: Math.max((product.quantity || 1) - 1, 1) }
+          : product
+      )
+    );
+  };
+
   return (
-    <main className="min-h-screen bg-[#FBF7EF]">
+    <section className="min-h-screen bg-[#F8F3E9] px-4 py-12 sm:px-6 sm:py-16">
 
-      {/* Cart Header */}
-      <section className="mx-auto max-w-7xl px-6 py-16 sm:py-20">
-        <div className="text-center">
-          <p className="text-xs tracking-[0.3em] text-[#77756D]">
-            YOUR SELECTION
-          </p>
+      <div className="mx-auto max-w-6xl">
 
-          <h1 className="mt-4 font-serif text-4xl text-[#46502F] sm:text-5xl">
-            Shopping Bag
-          </h1>
+        <h1 className="mb-10 text-center font-serif text-3xl text-[#46502F] sm:text-4xl">
+          Your Shopping Cart
+        </h1>
 
-          <p className="mt-4 text-sm text-[#77756D]">
-            Your skincare essentials, all in one place.
-          </p>
-        </div>
+        {cartItems.length === 0 ? (
 
-        {/* Cart Content */}
-        <div className="mt-14 grid grid-cols-1 gap-10 lg:grid-cols-3">
+          <div className="py-16 text-center">
 
-          {/* Products */}
-          <div className="space-y-6 lg:col-span-2">
-
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="flex flex-col gap-5 rounded-2xl border border-[#E8DDCC] bg-white p-5 sm:flex-row sm:items-center"
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-36 w-full rounded-xl bg-[#F1EAE0] object-contain p-4 sm:w-36"
-                />
-
-                <div className="flex-1">
-                  <h3 className="font-serif text-lg text-[#46502F]">
-                    {product.name}
-                  </h3>
-
-                  <p className="mt-2 text-sm text-[#77756D]">
-                    {product.size}
-                  </p>
-
-                  <p className="mt-3 font-medium text-[#46502F]">
-                    ${product.price}.00
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between sm:flex-col sm:items-end sm:gap-5">
-                  <div className="flex items-center gap-4 rounded-full border border-[#E8DDCC] px-4 py-2">
-                    <button className="text-[#46502F]">−</button>
-                    <span className="text-sm">{product.quantity}</span>
-                    <button className="text-[#46502F]">+</button>
-                  </div>
-
-                  <button className="text-xs text-[#77756D] underline underline-offset-4 hover:text-[#46502F]">
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))}
+            <p className="mb-6 text-[#77756D]">
+              Your cart is currently empty.
+            </p>
 
             <Link
               to="/shop"
-              className="inline-block pt-3 text-sm text-[#46502F] underline underline-offset-4"
+              className="inline-block rounded-full bg-[#46502F] px-8 py-3 text-sm text-white transition hover:bg-[#68734A]"
             >
-              ← Continue Shopping
+              Continue Shopping
             </Link>
+
           </div>
 
-          {/* Order Summary */}
-          <div className="h-fit rounded-2xl border border-[#E8DDCC] bg-white p-6 sm:p-8">
-            <h2 className="font-serif text-2xl text-[#46502F]">
-              Order Summary
-            </h2>
+        ) : (
 
-            <div className="mt-8 flex justify-between border-b border-[#E8DDCC] pb-5 text-sm">
-              <span className="text-[#77756D]">Subtotal</span>
-              <span className="text-[#46502F]">
-                ${subtotal.toFixed(2)}
-              </span>
+          <div className="grid gap-10 lg:grid-cols-3">
+
+            {/* Cart Products */}
+            <div className="space-y-5 lg:col-span-2">
+
+              {cartItems.map((product) => (
+
+                <div
+                  key={product.id}
+                  className="flex flex-col gap-5 rounded-2xl border border-[#E8DDCC] bg-[#FBF7EF] p-4 sm:flex-row sm:items-center"
+                >
+
+                  {/* Product Image */}
+                  <div className="h-28 w-full rounded-xl bg-[#F1EAE0] p-3 sm:w-28">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+
+                  {/* Product Information */}
+                  <div className="flex-1">
+
+                    <h2 className="font-serif text-lg text-[#46502F]">
+                      {product.name}
+                    </h2>
+
+                    <p className="mt-2 text-sm text-[#77756D]">
+                      ${product.price}.00
+                    </p>
+
+                  </div>
+
+                  {/* Quantity */}
+                  <div className="flex items-center gap-3">
+
+                    <button
+                      type="button"
+                      onClick={() => decreaseQuantity(product.id)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8CEBD] text-[#46502F]"
+                    >
+                      -
+                    </button>
+
+                    <span className="text-sm text-[#46502F]">
+                      {product.quantity || 1}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => increaseQuantity(product.id)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#D8CEBD] text-[#46502F]"
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                  {/* Remove */}
+                  <button
+                    type="button"
+                    onClick={() => removeProduct(product.id)}
+                    className="text-sm text-red-700 transition hover:text-red-900"
+                  >
+                    Remove
+                  </button>
+
+                </div>
+
+              ))}
+
             </div>
 
-            <div className="flex justify-between border-b border-[#E8DDCC] py-5 text-sm">
-              <span className="text-[#77756D]">Shipping</span>
-              <span className="text-[#77756D]">Calculated at checkout</span>
+            {/* Order Summary */}
+            <div className="h-fit rounded-2xl border border-[#E8DDCC] bg-[#FBF7EF] p-6">
+
+              <h2 className="font-serif text-xl text-[#46502F]">
+                Order Summary
+              </h2>
+
+              <div className="mt-6 flex justify-between text-sm text-[#77756D]">
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+
+              <div className="mt-4 flex justify-between border-t border-[#E8DDCC] pt-4 text-sm text-[#46502F]">
+                <span>Total</span>
+                <span className="font-semibold">
+                  ${subtotal.toFixed(2)}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                className="mt-8 w-full rounded-full bg-[#46502F] py-3 text-sm text-white transition hover:bg-[#68734A]"
+              >
+                Checkout
+              </button>
+
+              <Link
+                to="/shop"
+                className="mt-4 block text-center text-sm text-[#77756D] underline underline-offset-4"
+              >
+                Continue Shopping
+              </Link>
+
             </div>
 
-            <div className="mt-6 flex justify-between">
-              <span className="font-medium text-[#46502F]">Total</span>
-              <span className="font-medium text-[#46502F]">
-                ${subtotal.toFixed(2)}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              className="mt-8 w-full rounded-full bg-[#46502F] py-4 text-sm tracking-wider text-white transition-all duration-300 hover:bg-[#68734A] hover:shadow-md active:scale-95"
-            >
-              PROCEED TO CHECKOUT
-            </button>
-
-            <p className="mt-5 text-center text-xs leading-6 text-[#77756D]">
-              A little self-care goes a long way.
-              Thank you for choosing Lunéa Skin.
-            </p>
           </div>
 
-        </div>
-      </section>
-    </main>
+        )}
+
+      </div>
+
+    </section>
   );
 };
 

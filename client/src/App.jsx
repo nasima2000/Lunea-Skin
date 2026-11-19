@@ -13,10 +13,11 @@ import Shop from "./components/Shop";
 import Cart from "./components/Cart";
 import LoginPage from "./components/LoginPage";
 import SignUp  from "./components/SignUp";
-
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
+  const [cartItems, setCartItems] = useState([]);
   return (
  
     <Routes>
@@ -56,29 +57,35 @@ function App() {
       </>
     }
    />
-    <Route
-      path="/shop"
-       element={
-      <>
-      <Navbar />
-      <Shop />
-      <Footer />
-      </>
-       }
-   />
 
-   
-     
+
     <Route
-     path="/cart"
-      element={
+  path="/shop"
+  element={
     <>
       <Navbar />
-      <Cart />
+      <Shop
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+      />
       <Footer />
     </>
-   }
-     />
+  }
+    />
+     
+  <Route
+  path="/cart"
+  element={
+    <>
+      <Navbar />
+      <Cart
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+      />
+      <Footer />
+    </>
+  }
+/>
 
 
 

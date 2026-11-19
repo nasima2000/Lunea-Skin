@@ -1,4 +1,5 @@
 
+
 const products = [
   {
     id: 1,
@@ -38,10 +39,13 @@ const products = [
   },
 ];
 
-function ShopProducts() {
+function ShopProducts({ cartItems, setCartItems }) {
+    const addToCart = (product) => {
+  setCartItems([...cartItems, product]);
+};
   return (
     <section className="bg-[#F8F3E9] px-4 py-12 sm:px-6 sm:py-16">
-
+ 
       <div className="mx-auto max-w-7xl">
 
         {/* Products Grid */}
@@ -77,11 +81,12 @@ function ShopProducts() {
 
                 {/* Add to Cart Button */}
                 <button
-                  type="button"
-                  className="mt-3 rounded-full bg-[#46502F] px-6 py-2.5 text-xs text-white transition-all duration-300 hover:bg-[#68734A] hover:shadow-md active:scale-95"
-                >
-                  Add to Cart
-                </button>
+             type="button"
+           onClick={() => addToCart(product)}
+          className="mt-3 rounded-full bg-[#46502F] px-6 py-2.5 text-xs text-white transition-all duration-300 hover:bg-[#68734A] hover:shadow-md active:scale-95"
+               >
+              Add to Cart
+          </button>
 
               </div>
 
