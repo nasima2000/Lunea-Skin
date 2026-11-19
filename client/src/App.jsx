@@ -11,6 +11,7 @@ import About from "./components/about";
 import Contact from "./components/Contact";
 import Shop from "./components/Shop";
 import Cart from "./components/Cart";
+import LoginPage from "./components/LoginPage";
 
 
 import { Routes, Route } from "react-router-dom";
@@ -78,7 +79,22 @@ function App() {
     </>
    }
      />
+
+
+     <Route
+      path="/loginPage"
+       element={
+       <>
+      <Navbar />
+      <LoginPage />
+      <Footer />
+       </>
+       }
+     />
       
+
+     
+
    </Routes>
     
      
