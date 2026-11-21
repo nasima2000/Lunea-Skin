@@ -103,12 +103,18 @@ function Navbar() {
         >
           {navigationLinks.map(({ label, to }) => (
             <Link
-              className="py-2 text-sm tracking-[0.12em] text-[#465044] transition-colors duration-200 hover:text-[#879174] focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#69765c]"
-              key={label}
-              to={to}
-            >
-              {label}
-            </Link>
+           className="relative inline-block py-2 text-sm tracking-[0.12em] text-[#465044] transition-colors duration-200
+           hover:text-[#879174] focus-visible:rounded-sm focus-visible:outline-2
+           focus-visible:outline-offset-4 focus-visible:outline-[#69765c]
+           after:absolute after:bottom-0 after:left-0
+           after:h-[1px] after:w-full after:bg-black
+           after:content-[''] after:opacity-0
+           hover:after:opacity-100"
+           key={label}
+           to={to}
+           >
+         {label}
+         </Link>
           ))}
         </nav>
 
