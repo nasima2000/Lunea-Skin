@@ -1,44 +1,107 @@
 
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const Product = require("../models/Product");
 
-const productSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Product name is required"],
-    trim: true,
-    minlength: [2, "Product name must be at least 2 characters"]
-  },
+ // GET 
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find();
 
-  price: {
-    type: Number,
-    required: [true, "Price is required"],
-    min: [0, "Price cannot be negative"]
-  },
-
-  category: {
-    type: String,
-    required: [true, "Category is required"],
-    trim: true
-  },
-
-  description: {
-    type: String,
-    trim: true,
-    maxlength: [1000, "Description cannot exceed 1000 characters"]
-  },
-
-  image: {
-    type: String,
-    trim: true
-  },
-
-  stock: {
-    type: Number,
-    default: 0,
-    min: [0, "Stock cannot be negative"]
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-const Product = mongoose.model("Product", productSchema);
+// POST 
+router.post("/", async (req, res) => {
+  try {
+    const newProduct = new Product(req.body);
 
-module.exports = Product;
+    await newProduct.save();
+
+    res.status(201).json(newProduct);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// PUT 
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// PATCH 
+router.patch("/:id", async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// DELETE 
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    res.status(500).json({ message: error.message });
+  }
+});
+
+module.exports = router;
