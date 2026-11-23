@@ -1,4 +1,7 @@
+
 const express = require("express");
+require("dotenv").config();
+const connectDB = require("./db");
 
 const app = express();
 
@@ -14,6 +17,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/products", productRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
