@@ -1,32 +1,41 @@
+
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: [true, "Product name is required"],
+    trim: true,
+    minlength: [2, "Product name must be at least 2 characters"]
   },
 
   price: {
     type: Number,
-    required: true
+    required: [true, "Price is required"],
+    min: [0, "Price cannot be negative"]
   },
 
   category: {
     type: String,
-    required: true
+    required: [true, "Category is required"],
+    trim: true
   },
 
   description: {
-    type: String
+    type: String,
+    trim: true,
+    maxlength: [1000, "Description cannot exceed 1000 characters"]
   },
 
   image: {
-    type: String
+    type: String,
+    trim: true
   },
 
   stock: {
     type: Number,
-    default: 0
+    default: 0,
+    min: [0, "Stock cannot be negative"]
   }
 });
 
