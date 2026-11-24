@@ -1,10 +1,9 @@
 
 const express = require("express");
 const router = express.Router();
-
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-
+const jwt =require("jsonwebtoken") 
 // Register
 router.post("/register", async (req, res) => {
   try {
@@ -47,14 +46,6 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
-
-
-
-
-
-
 // Login
  router.post("/login", async (req, res) => {
   try {
@@ -84,9 +75,13 @@ router.post("/register", async (req, res) => {
         message: "Invalid email or password"
       });
     }
-
+     const token=jwt.sign(
+      {id:user._id, role : user.role },
+      process.env.JWT_SECRET,
+       { expiresIn :"7d"}
+     );
     return res.status(200).json({
-      message: "Login successful",
+      message: "Login successful",token,
       user: {
         id: user._id,
         name: user.name,

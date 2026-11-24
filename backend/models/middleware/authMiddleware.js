@@ -5,7 +5,7 @@ const authMiddleware = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {   
       return res.status(401).json({
         message: "Access denied. Token is required."
       });
@@ -24,6 +24,6 @@ const authMiddleware = (req, res, next) => {
       message: "Invalid or expired token"
     });
   }
-};
+};  
 
 module.exports = authMiddleware;
