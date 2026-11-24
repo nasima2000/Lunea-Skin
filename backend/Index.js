@@ -3,11 +3,11 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const express = require("express");
 require("dotenv").config();
 const connectDB = require("./db");
-
+const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 app.use(express.json());
-
+app.use("/api/auth", authRoutes);
 const productRoutes = require("./routes/productRoutes");
 
 const PORT = 5000;
