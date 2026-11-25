@@ -1,15 +1,13 @@
-
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
-const authmiddleware =require("../middlewae/authmiddleware");
-const adminMiddleware  =require("../middleware/adminMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
+const adminMiddleware = require("../middleware/adminMiddleware");
 
 // GET - Get all products
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
-
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -17,10 +15,11 @@ router.get("/", async (req, res) => {
 });
 
 // POST - Create a new product
-router.post("/",authmiddleware,adminMiddleware, async (req, res) => {
+router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const newProduct = new Product(req.body);
     await newProduct.save();
+
     res.status(201).json(newProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -28,7 +27,7 @@ router.post("/",authmiddleware,adminMiddleware, async (req, res) => {
 });
 
 // PUT - Update a product
-router.put("/:id",authmiddleware,adminMiddleware, async (req, res) => {
+router.put("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -47,7 +46,7 @@ router.put("/:id",authmiddleware,adminMiddleware, async (req, res) => {
 });
 
 // PATCH - Update part of a product
-router.patch("/:id",authmiddleware,adminMiddleware, async (req, res) => {
+router.patch("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -66,7 +65,7 @@ router.patch("/:id",authmiddleware,adminMiddleware, async (req, res) => {
 });
 
 // DELETE - Delete a product
-router.delete("/:id",authmiddleware,adminMiddleware, async (req, res) => {
+router.delete("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
