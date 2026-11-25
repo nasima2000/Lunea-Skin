@@ -14,6 +14,7 @@ router.get("/", authMiddleware, adminMiddleware, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 // GET - Get an order by ID
 router.get("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
@@ -28,10 +29,35 @@ router.get("/:id", authMiddleware, adminMiddleware, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 // POST - Create a new order
 router.post("/", authMiddleware, async (req, res) => {
   try {
-   const { products, shippingAddress } = req.body;
+    const { products, shippingAddress } = req.body;
+
+    if (!shippingAddress || !shippingAddress.trim()) {
+      return res.status(400).json({ message: "Shipping address is required" });
+    }
+
+    if (!products || products.length === 0) {
+      return res.status(400).json({ message: "Products are required" });
+    }
+
+    let totalPrice = 0;
+
+    for (const item of products) {
+      if (!item.quantity || item.quantity < 1) {
+        return res.status(400).json({ message: "Invalid quantity" });
+      }
+
+      const product = await Product.findById(item.product);
+
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+
+      totalPrice += product.price * item.quantity;
+    }
 
     const newOrder = new Order({
       user: req.user.id,
@@ -43,11 +69,11 @@ router.post("/", authMiddleware, async (req, res) => {
     await newOrder.save();
 
     res.status(201).json(newOrder);
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 // PUT - Update an order
 router.put("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
@@ -66,6 +92,7 @@ router.put("/:id", authMiddleware, adminMiddleware, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 // PATCH - Update part of an order
 router.patch("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
@@ -84,6 +111,7 @@ router.patch("/:id", authMiddleware, adminMiddleware, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 // DELETE - Delete an order
 router.delete("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   try {
