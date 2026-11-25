@@ -3,6 +3,7 @@ const router = express.Router();
 const Order = require("../models/Order");
 const authMiddleware = require("../middleware/authMiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
+const Product = require("../models/Product");
 
 // GET - Get all orders
 router.get("/", authMiddleware, adminMiddleware, async (req, res) => {
@@ -30,7 +31,7 @@ router.get("/:id", authMiddleware, adminMiddleware, async (req, res) => {
 // POST - Create a new order
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    const { products, totalPrice, shippingAddress } = req.body;
+   const { products, shippingAddress } = req.body;
 
     const newOrder = new Order({
       user: req.user.id,
