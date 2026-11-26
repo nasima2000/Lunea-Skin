@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
 const authMiddleware = require("../middleware/authMiddleware");
-const adminMiddleware = require("../middleware/adminMiddleware");
 
-// GET - Get all products
+const adminMiddleware = require("../middleware/adminMiddleware");
+//GET -get all products
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
   } catch (error) {
+    console.error("GET products error:", error);
     res.status(500).json({ message: error.message });
   }
 });
